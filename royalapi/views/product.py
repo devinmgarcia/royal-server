@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from royalapi.models import Product
 
 
-
 class ProductSerializer(serializers.ModelSerializer):
     """JSON serializer for products"""
     class Meta:
