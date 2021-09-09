@@ -1,0 +1,8 @@
+[{
+    "model": "royalapi.cartproduct",
+    "pk": 1,
+    "fields": {
+        "cart_id": 1,
+        "product_id": 1
+    }
+}]
