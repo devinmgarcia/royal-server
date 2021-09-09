@@ -1,0 +1,19 @@
+[{
+    "model": "royalapi.order",
+    "pk": 1,
+    "fields": {
+        "cart_id": 1,
+        "billing_street_one": "7715 Atherton Ave",
+        "billing_street_two": "",
+        "billing_city": "New Port Richey",
+        "billing_state": "Florida",
+        "billing_zip": 34655,
+        "shipping_street_one": "7715 Atherton Ave",
+        "shipping_street_two": "",
+        "shipping_city": "New Port Richey",
+        "shipping_state": "Florida",
+        "shipping_zip": 34655,
+        "tracking_info": null,
+        "date": "2021-09-09"
+    }
+}]

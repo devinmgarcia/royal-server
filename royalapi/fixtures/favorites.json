@@ -1,0 +1,8 @@
+[{
+    "model": "royalapi.favorite",
+    "pk": 1,
+    "fields": {
+        "customer_id": 1,
+        "product_id": 1
+    }
+}]
