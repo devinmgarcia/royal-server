@@ -12,6 +12,8 @@ router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'products', Products, 'product')
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    url(r'^api-token-auth$', obtain_auth_token),
     url(r'^', include(router.urls)),
     url(r'^api-auth', include('rest_framework.urls', namespace='rest_framework')),
 ]
