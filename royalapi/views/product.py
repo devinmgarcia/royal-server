@@ -13,7 +13,7 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ('title', 'price', 'in_stock', 'type_id')
         depth = 1
 
-class Products(ViewSet):
+class ProductsView(ViewSet):
 
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
