@@ -9,11 +9,14 @@ from django.urls import path
 from django.contrib import admin
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'products', Products, 'product')
+router.register(r'products', ProductsView, 'product')
+router.register(r'cart', CartView, 'cart')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('register', register_user),
+    path('login', login_user),
     url(r'^api-token-auth$', obtain_auth_token),
     url(r'^', include(router.urls)),
     url(r'^api-auth', include('rest_framework.urls', namespace='rest_framework')),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
