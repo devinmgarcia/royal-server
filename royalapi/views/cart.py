@@ -1,19 +1,46 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework import serializers
 from rest_framework.response import Response
-from royalapi.models import Cart, Customer, Product, CartProduct
+from royalapi.models import Cart, Customer, Product, CartProduct,  ProductImage, customer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import status
-from django.contrib.auth.models import User
 from rest_framework.decorators import action
+from django.contrib.auth.models import User
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    """JSON serializer for products"""
+    class Meta:
+        model = ProductImage
+        fields = ('id', 'image', 'product')
+
+class ProductSerializer(serializers.ModelSerializer):
+    """JSON serializer for products"""
+    productimage_set = ProductImageSerializer(many=True)
+    class Meta:
+        model = Product
+        fields = ('id', 'title', 'price', 'in_stock', 'type', "productimage_set")
+        depth = 1
+class UserSerializer(serializers.ModelSerializer):
+    """JSON serializer for users"""
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name')
+
+class CustomerSerializer(serializers.ModelSerializer):
+    """JSON serializer for customers"""
+    user = UserSerializer(many=False)
+    class Meta:
+        model = Customer
+        fields = ('id', 'user')
 
 class CartSerializer(serializers.ModelSerializer):
     """JSON serializer for carts"""
-    # products = ProductSerializer(many=True)
+    products = ProductSerializer(many=True)
+    customer = CustomerSerializer(many=False)
     class Meta:
         model = Cart
-        fields = ('customer_id', 'order_complete', 'products')
-        depth = 2
+        fields = ('id', 'customer', 'order_complete', 'products', 'total')
+        depth = 3
 
 class CartView(ViewSet):
 
@@ -21,7 +48,7 @@ class CartView(ViewSet):
     
     def list(self, request):
         customer = Customer.objects.get(user=request.auth.user)
-        cart = Cart.objects.get(customer_id=customer.id)
+        cart = Cart.objects.get(customer_id=customer.id, order_complete=False)
         serializer = CartSerializer(cart, many=False, context={'request': request})
         return Response(serializer.data)
 
@@ -43,7 +70,7 @@ class CartView(ViewSet):
         if request.method == "POST":       
             try:
                 customer = Customer.objects.get(user=request.auth.user)
-                cart = Cart.objects.get(customer_id=customer.id)
+                cart = Cart.objects.get(customer_id=customer.id, order_complete=False)
                 product = Product.objects.get(pk=pk)
                 CartProduct.objects.create(
                     cart = cart,
@@ -55,7 +82,7 @@ class CartView(ViewSet):
         if request.method == "DELETE":       
             try:
                 customer = Customer.objects.get(user=request.auth.user)
-                cart = Cart.objects.get(customer_id=customer.id)
+                cart = Cart.objects.get(customer_id=customer.id, order_complete=False)
                 cart_product = CartProduct.objects.filter(cart_id=cart.id, product_id=pk)
                 cart_product.delete()
                 return Response({}, status=status.HTTP_204_NO_CONTENT)

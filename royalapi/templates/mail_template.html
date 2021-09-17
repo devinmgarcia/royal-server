@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+<div>Order #{{order.id}}</div>
+<div>SHIP TO:</div>
+<div>{{order.recipient}}</div>
+<div>{{order.billing_street_one}}</div>
+<div>{{order.billing_city}} {{order.billing_state}}, {{order.billing_zip}}</div>
+<div>ITEMS ORDERED:</div>
+{% for item in order.cart.products.Objects.all %}
+    <div>{{item.title}}</div>
+{% endfor %}
+
+</body>
+</html>
