@@ -10,7 +10,10 @@ from django.contrib import admin
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'products', ProductsView, 'product')
-router.register(r'cart', CartView, 'cart')
+router.register(r'product_types', ProductTypesView, 'product_type')
+router.register(r'product_images', ProductImageView, 'product_image')
+router.register(r'cart', CartView, 'carts')
+router.register(r'orders', OrderView, 'order')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
